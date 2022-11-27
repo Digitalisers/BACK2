@@ -747,6 +747,138 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
+  /course:
+    get:
+      tags:
+        - Course
+      summary: Get all courses in HEIP
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          required: true
+          schema:
+            type: integer
+      operationId: getAllCourse
+      responses:
+        '200':
+          description: List of all courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+    post:
+      tags:
+        - Course
+      operationId: createStudentPayments
+      requestBody:
+        description: Student payments to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Created student payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'  
+  /evaluation:
+    get:
+      tags: 
+        - Evaluation
+      summary: Get all courses in HEIP
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          required: true
+          schema:
+            type: integer
+      operationId: getAllEvaluations
+      responses:
+        '200':
+          description: List of all evaluations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evaluation'
+    post:
+      tags:
+        - Evaluation
+      operationId: createStudentPayments
+      requestBody:
+        description: Student payments to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dateExamen:
+                    type: string
+                    example: "2022-10-3"
+                idCourse:
+                  type: number
+                  example: 1
+                idSemestre:
+                  type: number
+                  example: 1
+      responses:
+        '200':
+          description: Created student payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'  
+  /semestre:
+    get:
+      tags:
+        - Semestre
+      summary: Get all semestre at HEI
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: number
+          required: true
+        - name: page_size
+          in: query
+          schema:
+            type: number
+          required: true
+      operationId: getAllSemestres
+      responses:
+        '200':
+          description: List of all semestres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Semestre'
+    
+      
   /students/{student_id}/fees/{fee_id}/payments:
     get:
       tags:
@@ -873,6 +1005,79 @@ components:
           schema:
             $ref: '#/components/schemas/InternalServerException'
   schemas:
+    Evaluation:
+      properties:
+        idEvaluation:
+          type: string
+        dateExamen:
+          type: string
+          example: "2022-10-3"
+        course:
+          type: object
+          properties:
+            idCourse:
+              type: string
+            name:
+              type: string
+              example: "PROG1"
+            coef:
+              type: number
+              example: 2
+            credits:
+              type: number
+              example: 4
+        semestre:
+          type: object
+          properties:
+            idSemestre:
+              type: string
+            name:
+              type: string
+              example: "Semestre1"
+            beginDate:
+              type: string
+              example: "2022-10-15"
+            finishDate:
+              type: string
+              example: "2023-5-25"
+            average:
+              type: number
+              example: 14
+            mention: 
+              type: string
+              example: "assez bien"
+    Semestre:
+      properties:
+        idSemestre:
+          type: string
+        name:
+          type: string
+          example: "Semestre1"
+        beginDate:
+          type: string
+          example: "2022-10-15"
+        finishDate:
+          type: string
+          example: "2023-5-25"
+        average:
+          type: number
+          example: 14
+        mention: 
+          type: string
+          example: "assez bien"
+    Course:
+      properties:
+        idCourse:
+          type: string
+        name:
+          type: string
+          example: "PROG1"
+        coef:
+          type: number
+          example: 2
+        credits:
+          type: number
+          example: 4
     Whoami:
       properties:
         id:
@@ -943,21 +1148,6 @@ components:
         creation_datetime:
           type: string
           format: date-time
-    Course:
-      type: object
-      properties:
-        id:
-          type: string
-        ref:
-          type: string
-          example: PROG1
-        name:
-          type: string
-          example: Algorithmics
-        credits:
-          type: integer
-        total_hours:
-          type: integer
     CreateFee:
       type: object
       properties:
