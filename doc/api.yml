@@ -69,6 +69,96 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
+          
+        
+      
+        
+        
+        
+  '/grade/{id}':
+    get:
+      tags:
+        - Grade
+      summary: Get Grade by identifier
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: getGradeById
+      responses:
+        '200':
+          description: The identified Grade
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grade'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /grades:
+    get:
+      tags:
+        - Grade
+      summary: Get all grades
+      operationId: getGrades
+      responses:
+        '200':
+          description: List of grades
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Grade'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        
+    post:
+      tags:
+        - Grade
+      operationId: createGrade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Grade'
+      responses:
+        '200':
+          description: List of created grade
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grade'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'    
+        
+
   '/groups/{id}':
     get:
       tags:
@@ -824,7 +914,7 @@ paths:
     post:
       tags:
         - Evaluation
-      operationId: createStudentPayments
+      operationId: createEvaluation
       requestBody:
         description: Student payments to create
         required: true
@@ -938,7 +1028,7 @@ paths:
           required: true
           schema:
             type: string
-      operationId: createStudentPayments
+      operationId: createStudent
       requestBody:
         description: Student payments to create
         required: true
@@ -1005,6 +1095,59 @@ components:
           schema:
             $ref: '#/components/schemas/InternalServerException'
   schemas:
+  
+  
+    Grade:
+      properties:
+        idGrade:
+          type: string
+        average:
+          type: number
+        evaluation:
+          type: object
+          properties:
+            idEvaluation:
+              type: string
+            dateExamen:
+              type: string
+              example: "2022-10-3"
+            course:
+              type: object
+              properties:
+                idCourse:
+                  type: string
+                name:
+                  type: string
+                  example: "PROG1"
+            coef:
+              type: number
+              example: 2
+            credits:
+              type: number
+              example: 4
+        semestre:
+          type: object
+          properties:
+            idSemestre:
+              type: string
+            name:
+              type: string
+              example: "Semestre1"
+            beginDate:
+              type: string
+              example: "2022-10-15"
+            finishDate:
+              type: string
+              example: "2023-5-25"
+            average:
+              type: number
+              example: 14
+            mention: 
+              type: string
+              example: "assez bien"  
+          
+      
+      
     Evaluation:
       properties:
         idEvaluation:
